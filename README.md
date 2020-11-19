@@ -2,7 +2,7 @@
 This iteration provides delete functionality on our author table
 
 
-[Video which goes over codebase](https://youtu.be/uP2kH8tFXIQ)
+[Video which goes over codebase](https://youtu.be/9Ic3EsoX-HA)
 
 ## How to Install:
 - Step 1 : Download [MAMP](https://www.mamp.info/en/downloads/) or similar MySQL environment
