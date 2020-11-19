@@ -51,10 +51,17 @@ namespace BlogProject.Controllers
             while (ResultSet.Read())
             {
                 //Access Column information by the DB column name as an index
-                int AuthorId = (int)ResultSet["authorid"];
-                string AuthorFname = (string)ResultSet["authorfname"];
-                string AuthorLname = (string)ResultSet["authorlname"];
-                string AuthorBio = (string)ResultSet["authorbio"];
+                int AuthorId = Convert.ToInt32(ResultSet["authorid"]);
+                string AuthorFname = ResultSet["authorfname"].ToString();
+                string AuthorLname = ResultSet["authorlname"].ToString();
+                string AuthorBio = ResultSet["authorbio"].ToString(); ;
+
+                // This technique will work,
+                //DateTime AuthorJoinDate = (DateTime)ResultSet["authorjoindate"];
+
+                // This technique is safer!
+                DateTime AuthorJoinDate;
+                DateTime.TryParse(ResultSet["authorjoindate"].ToString(), out AuthorJoinDate);
 
                 Author NewAuthor = new Author();
                 NewAuthor.AuthorId = AuthorId;
@@ -75,6 +82,11 @@ namespace BlogProject.Controllers
 
 
 
+        /// <summary>
+        /// Finds an author from the database
+        /// </summary>
+        /// <param name="id">The id to match against a primary key record in the MySQL Database</param>
+        /// <returns>An author object</returns>
         [HttpGet]
         public Author FindAuthor(int id)
         {
@@ -105,10 +117,17 @@ namespace BlogProject.Controllers
                 string AuthorLname = (string)ResultSet["authorlname"];
                 string AuthorBio = (string)ResultSet["authorbio"];
 
+                // This technique will work,
+                //DateTime AuthorJoinDate = (DateTime)ResultSet["authorjoindate"];
+
+                DateTime AuthorJoinDate;
+                DateTime.TryParse(ResultSet["authorjoindate"].ToString(), out AuthorJoinDate);
+
                 NewAuthor.AuthorId = AuthorId;
                 NewAuthor.AuthorFname = AuthorFname;
                 NewAuthor.AuthorLname = AuthorLname;
                 NewAuthor.AuthorBio = AuthorBio;
+                NewAuthor.AuthorJoinDate = AuthorJoinDate;
             }
             Conn.Close();
 
@@ -117,10 +136,11 @@ namespace BlogProject.Controllers
 
 
         /// <summary>
-        /// 
+        /// Removes an Author from the database
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The ID of the author to remove</param>
         /// <example>POST : /api/AuthorData/DeleteAuthor/3</example>
+        /// <returns>Does not return anything.</returns>
         [HttpPost]
         public void DeleteAuthor(int id)
         {
